@@ -28,5 +28,24 @@
             &middot; <a href="https://github.com/nejohnson2">GitHub</a>
         </small>
     </footer>
+
+    <script>
+    (function() {
+        var el = document.getElementById('countdown');
+        function update() {
+            var now = new Date();
+            var midnight = new Date(Date.UTC(
+                now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1
+            ));
+            var diff = midnight - now;
+            var h = Math.floor(diff / 3600000);
+            var m = Math.floor((diff % 3600000) / 60000);
+            var s = Math.floor((diff % 60000) / 1000);
+            el.textContent = h + 'h ' + m + 'm ' + s + 's';
+        }
+        update();
+        setInterval(update, 1000);
+    })();
+    </script>
 </body>
 </html>

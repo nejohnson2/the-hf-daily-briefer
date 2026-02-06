@@ -236,6 +236,18 @@ footer small {
     color: #bbb;
 }
 
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.page-header .countdown {
+    font-size: 0.8rem;
+    color: #bbb;
+    letter-spacing: 0.02em;
+}
+
 .created-by {
     margin-top: 0.25rem;
 }
