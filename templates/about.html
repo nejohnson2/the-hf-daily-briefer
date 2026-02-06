@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}About - The HF Daily Briefer{% endblock %}
+
+{% block content %}
+<h1>About</h1>
+<p>
+    This site automatically generates a daily report about a trending model or
+    dataset from <a href="https://huggingface.co">HuggingFace</a>.
+</p>
+<p>
+    Every day, a scheduled job picks a random trending item, sends its metadata
+    to an LLM, and generates a grounded summary with 5 project ideas derived
+    strictly from the item's actual capabilities.
+</p>
+<p>
+    All summaries are based solely on HuggingFace metadata &mdash; no hallucinated
+    features or capabilities.
+</p>
+{% endblock %}

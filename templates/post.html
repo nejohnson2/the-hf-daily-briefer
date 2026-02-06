@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ report.title }} - The HF Daily Briefer{% endblock %}
+
+{% block content %}
+<article>
+    <div class="report-meta">
+        <span class="tag tag-{{ report.item_type }}">{{ report.item_type }}</span>
+        <span class="date">{{ report.created_at.strftime('%B %d, %Y') }}</span>
+    </div>
+    <h1>{{ report.title }}</h1>
+    <p class="item-link">
+        <a href="https://huggingface.co/{{ 'datasets/' if report.item_type == 'dataset' else '' }}{{ report.item_name }}"
+           target="_blank" rel="noopener">
+            {{ report.item_name }} &#8599;
+        </a>
+    </p>
+
+    <div class="report-summary">
+        {% for paragraph in report.summary.split('\n') %}
+            {% if paragraph.strip() %}
+                <p>{{ paragraph }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <h2>Project Ideas</h2>
+    <ol class="ideas-list">
+        {% for idea in report.ideas_list %}
+        <li>{{ idea }}</li>
+        {% endfor %}
+    </ol>
+
+    <a href="/" class="back-link">&larr; Back to all reports</a>
+</article>
+{% endblock %}

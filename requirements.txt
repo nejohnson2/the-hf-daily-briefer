@@ -1,0 +1,8 @@
+Flask==3.1.0
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.36
+gunicorn==23.0.0
+pg8000==1.31.2
+huggingface-hub==0.27.1
+openai==1.59.9
+python-dotenv==1.0.1

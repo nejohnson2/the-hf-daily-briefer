@@ -1,0 +1,251 @@
+/* Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Base */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    background: #fff;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+}
+
+/* Layout */
+header, main, footer {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Nav */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+}
+
+.site-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.nav-links a:hover {
+    color: #000;
+}
+
+/* Main */
+main {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+    min-height: 60vh;
+}
+
+h1 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+/* Report cards on index */
+.report-card {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.report-card:first-of-type {
+    padding-top: 0;
+}
+
+.report-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+}
+
+.tag-model {
+    background: #f0f0f0;
+    color: #555;
+}
+
+.tag-dataset {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.date {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.report-card h2 {
+    margin-bottom: 0.25rem;
+}
+
+.report-card h2 a {
+    color: #111;
+}
+
+.report-card h2 a:hover {
+    color: #555;
+}
+
+.item-name {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+.summary {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.empty {
+    color: #999;
+    font-style: italic;
+}
+
+/* Report detail */
+article h1 {
+    margin-bottom: 0.25rem;
+}
+
+.item-link {
+    margin-bottom: 1.5rem;
+}
+
+.item-link a {
+    font-size: 0.85rem;
+    color: #666;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1px;
+}
+
+.item-link a:hover {
+    color: #000;
+    border-color: #000;
+}
+
+.report-summary {
+    margin-bottom: 2rem;
+}
+
+.report-summary p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+article h2 {
+    margin-bottom: 1rem;
+}
+
+.ideas-list {
+    margin-bottom: 2.5rem;
+    padding-left: 1.25rem;
+}
+
+.ideas-list li {
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+    padding-left: 0.25rem;
+}
+
+.back-link {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: #888;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1px;
+}
+
+.back-link:hover {
+    color: #000;
+    border-color: #000;
+}
+
+/* About */
+main p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+main p a {
+    border-bottom: 1px solid #ccc;
+}
+
+main p a:hover {
+    border-color: #000;
+}
+
+/* Footer */
+footer {
+    padding: 2rem 1.5rem;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+footer small {
+    display: block;
+    font-size: 0.8rem;
+    color: #bbb;
+}
+
+.created-by {
+    margin-top: 0.25rem;
+}
+
+.created-by a {
+    color: #aaa;
+    border-bottom: 1px solid #ddd;
+}
+
+.created-by a:hover {
+    color: #666;
+    border-color: #999;
+}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Daily Reports</h1>
+
+{% for report in reports %}
+<div class="report-card">
+    <div class="report-meta">
+        <span class="tag tag-{{ report.item_type }}">{{ report.item_type }}</span>
+        <span class="date">{{ report.created_at.strftime('%B %d, %Y') }}</span>
+    </div>
+    <h2><a href="/post/{{ report.id }}">{{ report.title }}</a></h2>
+    <p class="item-name">{{ report.item_name }}</p>
+    <p class="summary">{{ report.summary[:200] }}...</p>
+</div>
+{% else %}
+<p class="empty">No reports yet. Check back tomorrow!</p>
+{% endfor %}
+{% endblock %}
