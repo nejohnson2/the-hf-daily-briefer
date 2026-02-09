@@ -1,6 +1,12 @@
+import logging
 import random
+import tempfile
 
-from huggingface_hub import HfApi
+from huggingface_hub import HfApi, hf_hub_download
+
+logger = logging.getLogger(__name__)
+
+MAX_README_LENGTH = 20000
 
 
 def fetch_trending_item(token=None, used_names=None):
@@ -67,3 +73,42 @@ def _extract_metadata(item, item_type):
         meta["card_data_summary"] = str(item.card_data)[:2000]
 
     return meta
+
+
+def fetch_readme(repo_id, item_type, token=None):
+    """Download the README.md for a specific HuggingFace repo.
+
+    Args:
+        repo_id: The exact repo ID (e.g. "meta-llama/Llama-3-8B").
+        item_type: "model" or "dataset" — determines the repo_type.
+        token: Optional HuggingFace API token.
+
+    Returns:
+        The README content as a string, or None if unavailable.
+    """
+    repo_type = "dataset" if item_type == "dataset" else "model"
+
+    try:
+        path = hf_hub_download(
+            repo_id=repo_id,
+            filename="README.md",
+            repo_type=repo_type,
+            token=token,
+            cache_dir=tempfile.mkdtemp(),
+        )
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        if len(content) > MAX_README_LENGTH:
+            logger.info(
+                "README for %s is %d chars, truncating to %d",
+                repo_id, len(content), MAX_README_LENGTH,
+            )
+            content = content[:MAX_README_LENGTH] + "\n\n[... truncated ...]"
+
+        logger.info("Fetched README for %s (%d chars)", repo_id, len(content))
+        return content
+
+    except Exception as e:
+        logger.warning("Could not fetch README for %s: %s", repo_id, e)
+        return None

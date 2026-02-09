@@ -8,7 +8,7 @@ from flask.cli import with_appcontext
 
 from extensions import db
 from models import Report
-from services.huggingface import fetch_trending_item
+from services.huggingface import fetch_trending_item, fetch_readme
 from services.llm import generate_report
 
 logger = logging.getLogger(__name__)
@@ -34,6 +34,19 @@ def register_commands(app):
                 used_names=used_names,
             )
             click.echo(f"Selected: {metadata['id']} ({metadata['type']})")
+
+            # Fetch the README for this specific repo
+            click.echo(f"Fetching README for {metadata['id']}...")
+            readme = fetch_readme(
+                repo_id=metadata["id"],
+                item_type=metadata["type"],
+                token=current_app.config.get("HUGGINGFACE_TOKEN"),
+            )
+            if readme:
+                metadata["readme"] = readme
+                click.echo(f"README fetched ({len(readme)} chars)")
+            else:
+                click.echo("README not available, continuing with metadata only")
 
             click.echo("=== Metadata sent to LLM ===")
             click.echo(json.dumps(metadata, indent=2, default=str))

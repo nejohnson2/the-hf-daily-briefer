@@ -23,14 +23,18 @@ Your job is to produce a JSON response with exactly these fields:
    (e.g., the pipeline_tag, tags, or library). Do not suggest ideas that
    require capabilities not evidenced in the metadata.
 
+You may also receive the project's README content. When available, use it as your
+primary source for understanding the project's purpose, capabilities, and usage.
+The README is authoritative -- prefer it over inferences from tags or metadata.
+
 IMPORTANT RULES:
 - Output ONLY valid JSON. No markdown, no explanation outside the JSON.
 - The "ideas" array must contain 5 plain strings, NOT objects or dicts.
   Example: ["Build a chatbot using...", "Create a pipeline for..."]
-- Every claim in the summary must be traceable to a field in the metadata.
+- Every claim in the summary must be traceable to the metadata or README.
 - Every project idea must be feasible given the model/dataset's stated capabilities.
-- If the metadata is sparse, say so honestly rather than speculating.
-- Do NOT hallucinate features, benchmarks, or capabilities not present in the metadata.
+- If the metadata is sparse and no README is available, say so honestly rather than speculating.
+- Do NOT hallucinate features, benchmarks, or capabilities not present in the metadata or README.
 """
 
 USER_PROMPT_TEMPLATE = """Here is the metadata for today's trending HuggingFace {item_type}:
