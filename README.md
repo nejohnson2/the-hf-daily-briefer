@@ -2,16 +2,17 @@
 
 A website that automatically generates daily reports on trending models and datasets from [HuggingFace](https://huggingface.co). Each day, a scheduler picks a random trending item, sends its metadata to an LLM, and publishes a grounded summary with 5 project ideas.
 
-All summaries are derived strictly from HuggingFace metadata — no hallucinated features or capabilities.
+All summaries are derived strictly from HuggingFace metadata and project READMEs — no hallucinated features or capabilities.
 
 ## How It Works
 
-1. **Heroku Scheduler** triggers `flask generate-report` once per day
+1. **Heroku Scheduler** triggers `flask generate-report` once per day (midnight UTC)
 2. The command fetches trending models and datasets from the HuggingFace API
 3. Items that have already been featured are filtered out (no duplicates)
-4. A random unused item is selected and its metadata is sent to an Ollama-compatible LLM
-5. The LLM generates a title, summary, and 5 project ideas grounded in the metadata
-6. The report is saved to PostgreSQL and displayed on the website
+4. A random unused item is selected and its README is fetched from the repo for richer context
+5. The metadata and README are sent to an Ollama-compatible LLM
+6. The LLM generates a title, summary, and 5 project ideas grounded in the source material
+7. The report is saved to PostgreSQL and displayed on the website
 
 ## Tech Stack
 
@@ -87,7 +88,7 @@ daily-huggingface-report/
 ├── extensions.py             # Flask-SQLAlchemy instance
 ├── cli.py                    # flask generate-report CLI command
 ├── services/
-│   ├── huggingface.py        # HuggingFace trending API integration
+│   ├── huggingface.py        # HuggingFace trending API + README fetching
 │   └── llm.py                # Ollama LLM integration and prompt
 ├── templates/
 │   ├── base.html             # Base layout
