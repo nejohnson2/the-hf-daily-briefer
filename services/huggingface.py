@@ -26,25 +26,37 @@ def fetch_trending_item(token=None, used_names=None):
         used_names = set()
 
     api = HfApi(token=token)
+    logger.info("Querying HuggingFace API for trending items (used_names: %d)", len(used_names))
 
     # Try with 20 first, expand to 50 if all are used
     for limit in (20, 50):
+        logger.info("Fetching top %d trending models...", limit)
         models = list(
             api.list_models(sort="trending_score", direction=-1, limit=limit)
         )
+        logger.info("Fetched %d models", len(models))
+
+        logger.info("Fetching top %d trending datasets...", limit)
         datasets = list(
             api.list_datasets(sort="trending_score", direction=-1, limit=limit)
         )
+        logger.info("Fetched %d datasets", len(datasets))
 
         pool = [(m, "model") for m in models] + [(d, "dataset") for d in datasets]
+        logger.info("Total pool: %d items (%d models + %d datasets)", len(pool), len(models), len(datasets))
 
         # Filter out previously used items
         available = [(item, t) for item, t in pool if item.id not in used_names]
+        logger.info("Available after dedup: %d of %d", len(available), len(pool))
 
         if available:
             item, item_type = random.choice(available)
+            logger.info("Selected: %s (%s)", item.id, item_type)
             return _extract_metadata(item, item_type)
 
+        logger.warning("All %d items already used at limit=%d, expanding pool...", len(pool), limit)
+
+    logger.error("No unused trending items found even after expanding to limit=50")
     raise RuntimeError(
         "All trending items have already been reported on. "
         "Try again later when new items are trending."

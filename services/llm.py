@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 
 from openai import OpenAI
 
@@ -62,6 +63,12 @@ def generate_report(metadata, ollama_url, api_key, model):
     Raises:
         ValueError: If the LLM response cannot be parsed as valid JSON.
     """
+    logger.info("Preparing LLM request for %s (%s)", metadata["id"], metadata["type"])
+    logger.info("LLM endpoint: %s, model: %s", ollama_url, model)
+    has_readme = "readme" in metadata
+    logger.info("README included: %s%s", has_readme,
+                f" ({len(metadata['readme'])} chars)" if has_readme else "")
+
     client = OpenAI(
         base_url=f"{ollama_url.rstrip('/')}/v1",
         api_key=api_key,
@@ -72,16 +79,22 @@ def generate_report(metadata, ollama_url, api_key, model):
         metadata_json=json.dumps(metadata, indent=2, default=str),
     )
 
+    prompt_length = len(SYSTEM_PROMPT) + len(user_content)
+    logger.info("Total prompt length: %d chars", prompt_length)
+
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": user_content},
     ]
 
+    logger.info("Sending request to LLM (attempt 1)...")
     result = _call_and_parse(client, model, messages)
     if result is not None:
+        logger.info("LLM returned valid report: '%s'", result["title"])
         return result
 
     # Retry once with a nudge
+    logger.warning("First LLM attempt failed, retrying with nudge (attempt 2)...")
     messages.append(
         {
             "role": "user",
@@ -95,21 +108,27 @@ def generate_report(metadata, ollama_url, api_key, model):
 
     result = _call_and_parse(client, model, messages)
     if result is not None:
+        logger.info("LLM retry succeeded: '%s'", result["title"])
         return result
 
+    logger.error("LLM failed to produce valid JSON after 2 attempts")
     raise ValueError("LLM failed to produce valid JSON after retry.")
 
 
 def _call_and_parse(client, model, messages):
     """Make an LLM call and attempt to parse the response as JSON."""
+    start = time.time()
     response = client.chat.completions.create(
         model=model,
         messages=messages,
         temperature=0.7,
         max_tokens=2000,
     )
+    elapsed = time.time() - start
+    logger.info("LLM response received in %.1fs", elapsed)
 
     raw_text = response.choices[0].message.content.strip()
+    logger.info("Response length: %d chars", len(raw_text))
     logger.info("=== LLM Raw Response ===")
     logger.info(raw_text)
     logger.info("========================")
